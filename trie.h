@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-using namespace std;
 
 struct TrieNode {
 
@@ -22,7 +21,7 @@ struct TrieNode {
     }
 };
 
-void insert_key(TrieNode* root, string& key)
+void insert_key(TrieNode* root, std::string& key)
 {
     // Initialize the currentNode pointer
     // with the root node
@@ -55,7 +54,7 @@ void insert_key(TrieNode* root, string& key)
     currentNode->wordEnd = 1;
 }
 
-bool search_key(TrieNode* root, string& key)
+bool search_key(TrieNode* root, std::string& key)
 {
     // Initialize the currentNode pointer
     // with the root node
@@ -80,45 +79,3 @@ bool search_key(TrieNode* root, string& key)
     return (currentNode->wordEnd == true);
 }
 
-// Driver code
-int main()
-{
-    // Make a root node for the Trie
-    TrieNode* root = new TrieNode();
-
-    // Stores the strings that we want to insert in the
-    // Trie
-    vector<string> inputStrings
-        = { "and", "ant", "do", "geek", "dad", "ball" };
-
-    // number of insert operations in the Trie
-    int n = inputStrings.size();
-
-    for (int i = 0; i < n; i++) {
-        insert_key(root, inputStrings[i]);
-    }
-
-    // Stores the strings that we want to search in the Trie
-    vector<string> searchQueryStrings
-        = { "do", "geek", "bat" };
-
-    // number of search operations in the Trie
-    int searchQueries = searchQueryStrings.size();
-
-    for (int i = 0; i < searchQueries; i++) {
-        cout << "Query String: " << searchQueryStrings[i]
-             << "\n";
-        if (search_key(root, searchQueryStrings[i])) {
-            // the queryString is present in the Trie
-            cout << "The query string is present in the "
-                    "Trie\n";
-        }
-        else {
-            // the queryString is not present in the Trie
-            cout << "The query string is not present in "
-                    "the Trie\n";
-        }
-    }
-
-    return 0;
-}
