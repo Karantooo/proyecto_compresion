@@ -1,3 +1,6 @@
+#ifndef TRIE_H
+#define TRIE_h
+
 #include <bits/stdc++.h>
 
 struct TrieNode {
@@ -79,3 +82,4 @@ bool search_key(TrieNode* root, std::string& key)
     return (currentNode->wordEnd == true);
 }
 
+#endif
