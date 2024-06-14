@@ -21,7 +21,7 @@ class HuffmanCoding{
             compare> minHeap; 
         std::fstream pre_order_file, in_order_file;
         std::fstream pre_order_read, in_order_read;
-        std::string ruta;
+        std::string ruta, ruta_inorder, ruta_preorder;
 
         std::vector<MinHeapNode> preorder_tree;
         std::vector<MinHeapNode> inorder_tree;
@@ -48,6 +48,16 @@ class HuffmanCoding{
                         frecuencia_caracter[character]++;
                     }
                 }
+        }
+
+        HuffmanCoding(std::string ruta_preorder, std::string ruta_inorder){
+            this->ruta_preorder = ruta_preorder;
+            this->ruta_inorder = ruta_inorder;
+
+            _read_pre_order();
+            _read_in_order();
+
+
         }
         
 
@@ -85,8 +95,11 @@ class HuffmanCoding{
             } 
             this->_store_pre_order();
             this->_store_in_order();
+            pre_order_file.close();
+            in_order_file.close();
 
         }
+
 
 
         private:
@@ -129,14 +142,13 @@ class HuffmanCoding{
 
         void _read_pre_order(){
             pre_order_file.close();
-            pre_order_read.open("pre_" + ruta + ".dat", std::ios::in | std::ios::binary);
+            pre_order_read.open(ruta_preorder, std::ios::in | std::ios::binary);
 
 
             while (pre_order_read.peek() != EOF){
                 MinHeapNode a('a', 0);
                 pre_order_read.read(reinterpret_cast<char*> (&a), sizeof(MinHeapNode));
                 preorder_tree.push_back(a);
-                std::cout << a << std::endl;
             }
         }
 
@@ -178,7 +190,7 @@ class HuffmanCoding{
 
         void _read_in_order(){
             in_order_file.close();
-            in_order_read.open("in_" + ruta + ".dat", std::ios::in | std::ios::binary);
+            in_order_read.open(ruta_inorder, std::ios::in | std::ios::binary);
 
 
             while (in_order_read.peek() != EOF){
