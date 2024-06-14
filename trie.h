@@ -1,3 +1,6 @@
+#ifndef TRIE_H
+#define TRIE_H
+
 #include <bits/stdc++.h>
 
 struct TrieNode {
@@ -128,3 +131,5 @@ std::pair<int, int>* search_key(TrieNode* root, std::string key)
         return nullptr;
     }
 }
+
+#endif
