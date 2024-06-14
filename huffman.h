@@ -49,6 +49,7 @@ class HuffmanCoding{
                     }
                 }
         }
+        
 
         void enconde() { 
             struct MinHeapNode *left, *right, *top; 
@@ -82,41 +83,15 @@ class HuffmanCoding{
 
                 minHeap.push(top); 
             } 
+            this->_store_pre_order();
+            this->_store_in_order();
+
         }
 
-        void printCodes() { 
-            struct MinHeapNode* root = minHeap.top();
-            std::string str;
 
-            if (!root) 
-                return; 
+        private:
 
-            if (root->data != '$'){
-                std::cout << root->data << ": " << str << "\n"; 
-                symbols[root->data] = str;
-            } 
-
-            printCodes(root->left, str + "1"); 
-            printCodes(root->right, str + "0"); 
-        } 
-
-
-        void printCodes(struct MinHeapNode* root, std::string str) { 
-
-            if (!root) 
-                return; 
-
-            if (root->data != '$'){
-                std::cout << root->data << ": " << str << "\n"; 
-                symbols[root->data] = str;
-            } 
-
-            printCodes(root->left, str + "1"); 
-            printCodes(root->right, str + "0"); 
-        } 
-
-
-        void store_pre_order() { 
+        void _store_pre_order() { 
             struct MinHeapNode* root = minHeap.top();
             std::string str;
 
@@ -130,12 +105,12 @@ class HuffmanCoding{
                 symbols[root->data] = str;
             } 
 
-            store_pre_order(root->left, str + "1"); 
-            store_pre_order(root->right, str + "0"); 
+            _store_pre_order(root->left, str + "1"); 
+            _store_pre_order(root->right, str + "0"); 
         } 
 
 
-        void store_pre_order(struct MinHeapNode* root, std::string str) { 
+        void _store_pre_order(struct MinHeapNode* root, std::string str) { 
 
             if (!root) 
                 return; 
@@ -148,11 +123,11 @@ class HuffmanCoding{
                 symbols[root->data] = str;
             } 
 
-            store_pre_order(root->left, str + "1"); 
-            store_pre_order(root->right, str + "0"); 
+            _store_pre_order(root->left, str + "1"); 
+            _store_pre_order(root->right, str + "0"); 
         } 
 
-        void read_pre_order(){
+        void _read_pre_order(){
             pre_order_file.close();
             pre_order_read.open("pre_" + ruta + ".dat", std::ios::in | std::ios::binary);
 
@@ -161,10 +136,11 @@ class HuffmanCoding{
                 MinHeapNode a('a', 0);
                 pre_order_read.read(reinterpret_cast<char*> (&a), sizeof(MinHeapNode));
                 preorder_tree.push_back(a);
+                std::cout << a << std::endl;
             }
         }
 
-        void store_in_order() { 
+        void _store_in_order() { 
             struct MinHeapNode* root = minHeap.top();
             std::string str;
 
@@ -178,12 +154,12 @@ class HuffmanCoding{
                 symbols[root->data] = str;
             } 
 
-            store_in_order(root->left, str + "1"); 
-            store_in_order(root->right, str + "0"); 
+            _store_in_order(root->left, str + "1"); 
+            _store_in_order(root->right, str + "0"); 
         } 
 
 
-        void store_in_order(struct MinHeapNode* root, std::string str) { 
+        void _store_in_order(struct MinHeapNode* root, std::string str) { 
 
             if (!root) 
                 return; 
@@ -195,12 +171,12 @@ class HuffmanCoding{
                 symbols[root->data] = str;
             } 
 
-            store_in_order(root->left, str + "1"); 
+            _store_in_order(root->left, str + "1"); 
             in_order_file.write(reinterpret_cast<char*> (&(*root)), sizeof(MinHeapNode));
-            store_in_order(root->right, str + "0"); 
+            _store_in_order(root->right, str + "0"); 
         } 
 
-        void read_in_order(){
+        void _read_in_order(){
             in_order_file.close();
             in_order_read.open("in_" + ruta + ".dat", std::ios::in | std::ios::binary);
 

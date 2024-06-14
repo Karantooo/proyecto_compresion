@@ -1,3 +1,5 @@
+#pragma once
+#include <iostream>
 struct MinHeapNode { 
 
 	// One of the input characters 
@@ -14,7 +16,7 @@ struct MinHeapNode {
 
 	{ 
 
-		left = right = NULL; 
+		left = right = nullptr; 
 		this->data = data; 
 		this->freq = freq; 
 	} 
@@ -33,3 +35,10 @@ struct compare {
 		return (l->freq > r->freq); 
 	} 
 }; 
+
+
+std::ostream& operator<< (std::ostream& stream, MinHeapNode nodo){
+    stream << nodo.data << " ";
+    stream << nodo.freq;
+    return stream;
+}
