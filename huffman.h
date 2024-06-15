@@ -26,6 +26,8 @@ class HuffmanCoding{
         std::vector<MinHeapNode> preorder_tree;
         std::vector<MinHeapNode> inorder_tree;
 
+        MinHeapNode* dictionary_tree;
+
 
         
     public:
@@ -56,7 +58,8 @@ class HuffmanCoding{
 
             _read_pre_order();
             _read_in_order();
-
+            dictionary_tree = _buildTree(0, preorder_tree.size() - 1);
+            
 
         }
         
@@ -97,6 +100,8 @@ class HuffmanCoding{
             this->_store_in_order();
             pre_order_file.close();
             in_order_file.close();
+
+
 
         }
 
@@ -199,6 +204,75 @@ class HuffmanCoding{
                 inorder_tree.push_back(a);
             }
         }
+
+
+
+
+        /**
+         * @brief codigo para leer dos arrays en inorder y preorder y reconstruir el arbol a partir de eso
+         * Este codigo esta basado en un problema de leetcode y su respectiva solucion en geeks for geeks
+         * El codigo fue adaptado para funcionar en el caso especifico del problema
+         * tambien se quito argumentos y se adapto a una clase.
+         * Función recursiva para construir un árbol binario de tamaño preorder_tree.size() a partir de la travesía Inorder 
+         * y la travesía Preorder. Los valores iniciales de inStrt e inEnd deben ser 0 y preorder_tree.size() - 1. 
+         * La función no realiza ninguna verificación de errores para casos en los que Inorder y Preorder no 
+         * forman un árbol. Esta descripcion es una traduccion de la dada en geeks for geeks
+         * @link https://www.geeksforgeeks.org/construct-tree-from-given-inorder-and-preorder-traversal/
+         * @param inStrt comienzo del array
+         * @param inEnd final del array
+         * @return entrega la raiz del arbol que se construyo
+         */
+
+        int preIndex = 0; 
+        MinHeapNode* _buildTree(int inStrt, int inEnd) 
+        { 
+        
+            if (inStrt > inEnd) 
+                return NULL; 
+        
+            /* Pick current node from Preorder
+            traversal using preIndex 
+            and increment preIndex */
+            MinHeapNode* tNode = new MinHeapNode(1,0); 
+            *tNode = preorder_tree[preIndex++]; 
+
+            /* If this node has no children then return */
+            if (inStrt == inEnd) 
+                return tNode; 
+        
+            /* Else find the index of this node in Inorder traversal */
+            int inIndex = search(inorder_tree, inStrt, inEnd, *tNode); 
+        
+            /* Using index in Inorder traversal, construct left and 
+            right subtress */
+            tNode->left = _buildTree(inStrt, inIndex - 1); 
+            tNode->right = _buildTree(inIndex + 1, inEnd); 
+        
+            return tNode; 
+        } 
+ 
+
+        /**
+         * @brief funcion de utilidad para buscar en un array un valor especifico
+         * Función para encontrar el índice del valor en arr[inicio...final]
+         * La función asume que el valor está presente
+         * @param arr el arreglo a buscar
+         * @param strt comienzo del arreglo a buscar
+         * @param end final del arreglo a buscar
+         * @param value nodo buscado
+         * @return int entrega el indice en que se encuentra el valor
+         * @return entrega en caso de error el comienzo del array
+         */
+        int search(std::vector<MinHeapNode> arr, int strt, int end, MinHeapNode value) 
+        { 
+            int i; 
+            for (i = strt; i <= end; i++) 
+            { 
+                if (arr[i] == value) 
+                    return i; 
+            } 
+            return strt;
+        } 
 
 
 };
