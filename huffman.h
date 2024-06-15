@@ -4,6 +4,7 @@
 #include <queue>
 #include <fstream>
 #include <iostream>
+#include <bitset>
 #include "MinHeap.h"
 /**
  * @brief archivo que tiene la implementacion de huffman 
@@ -28,6 +29,8 @@ class HuffmanCoding{
 
         MinHeapNode* dictionary_tree;
 
+        std::vector<std::string> lineas_codificadas;
+
 
         
     public:
@@ -35,20 +38,24 @@ class HuffmanCoding{
         HuffmanCoding(std::string ruta): ruta(ruta){
             file.open(ruta);
             std::string word;
-            pre_order_file.open("pre_" + ruta + ".dat", std::ios::out | std::ios::binary);
-            in_order_file.open("in_" + ruta + ".dat", std::ios::out | std::ios::binary);
+            ruta_preorder = "pre_" + ruta + ".dat";
+            ruta_inorder = "in_" + ruta + ".dat";
+            pre_order_file.open(ruta_preorder, std::ios::out | std::ios::binary);
+            in_order_file.open(ruta_inorder, std::ios::out | std::ios::binary);
             
 
 
 
             while(std::getline(file, word)){
                 // std::cout << word << std::endl;
+                lineas_codificadas.push_back(word);
                 for (auto character : word){
                     if (frecuencia_caracter.find(character) == frecuencia_caracter.end())
                         frecuencia_caracter[character] = 1;
                     else
                         frecuencia_caracter[character]++;
                     }
+
                 }
         }
 
@@ -100,7 +107,7 @@ class HuffmanCoding{
             this->_store_in_order();
             pre_order_file.close();
             in_order_file.close();
-
+            _write_file();
 
 
         }
@@ -273,6 +280,17 @@ class HuffmanCoding{
             } 
             return strt;
         } 
+
+        void _write_file(){
+            file.open("compressed.dat", std::ios::out | std::ios::binary);
+            std::string respuesta = "";
+            for (auto linea : lineas_codificadas){
+                for (auto caracter : linea){
+                    respuesta += symbols[caracter];
+                }
+            }
+            
+        }
 
 
 };
