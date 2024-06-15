@@ -177,8 +177,8 @@ class HuffmanCoding{
             if (!root) 
                 return; 
             
-            in_order_file.write(reinterpret_cast<char*> (&(root->data)), sizeof(root->data));
-            in_order_file.write(reinterpret_cast<char*> (&(root->freq)), sizeof(root->freq));
+            pre_order_file.write(reinterpret_cast<char*> (&(root->data)), sizeof(root->data));
+            pre_order_file.write(reinterpret_cast<char*> (&(root->freq)), sizeof(root->freq));
 
 
             if (root->data != '$'){
@@ -203,8 +203,8 @@ class HuffmanCoding{
             } 
 
             _store_in_order(root->left, str + "1"); 
-            in_order_file.write(reinterpret_cast<char*> (&(root->data)), sizeof(root->data));
-            in_order_file.write(reinterpret_cast<char*> (&(root->freq)), sizeof(root->freq));
+            pre_order_file.write(reinterpret_cast<char*> (&(root->data)), sizeof(root->data));
+            pre_order_file.write(reinterpret_cast<char*> (&(root->freq)), sizeof(root->freq));
             _store_in_order(root->right, str + "0"); 
         } 
 
@@ -216,8 +216,8 @@ class HuffmanCoding{
             while (in_order_read.peek() != EOF){
                 char answer_char;
                 unsigned short int answer_int;
-                in_order_read.read(reinterpret_cast<char*> (&answer_char), sizeof(char));
-                in_order_read.read(reinterpret_cast<char*> (&answer_int), sizeof(unsigned short int));
+                pre_order_read.read(reinterpret_cast<char*> (&answer_char), sizeof(char));
+                pre_order_read.read(reinterpret_cast<char*> (&answer_int), sizeof(unsigned short int));
                 
                 MinHeapNode a(answer_char, answer_int);
 

@@ -6,13 +6,13 @@ struct MinHeapNode {
 	char data; 
 
 	// Frequency of the character 
-	unsigned freq; 
+	unsigned short int freq; 
 
 	// Left and right child 
 	MinHeapNode *left, *right; 
 
 
-	MinHeapNode(char data, unsigned freq) 
+	MinHeapNode(char data, unsigned short int freq) 
 
 	{ 
 
