@@ -34,7 +34,11 @@ class HuffmanCoding{
 
         
     public:
-
+        /**
+         * @brief Construct a new Huffman Coding object
+         * Si se usa este constructor es que se quiere comprimir el archivo de esta ruta
+         * @param ruta ruta del achivo a comprimir
+         */
         HuffmanCoding(std::string ruta): ruta(ruta){
             file.open(ruta);
             std::string word;
@@ -59,18 +63,29 @@ class HuffmanCoding{
                 }
         }
 
-        HuffmanCoding(std::string ruta_preorder, std::string ruta_inorder){
+        /**
+         * @brief Construct a new Huffman Coding object
+         * Si se usa este constructor es porque se quiere leer los datos de un archivo
+         * @param ruta ruta del achivo comprimido
+         * @param ruta_preorder parte de la llave para descomprimir. Se trata del arbol en preorder
+         * @param ruta_inorder parte de la llave para descomprimir. Se trata del arbol en inorder
+         */
+        HuffmanCoding(std::string ruta, std::string ruta_preorder, std::string ruta_inorder) : ruta(ruta){
             this->ruta_preorder = ruta_preorder;
             this->ruta_inorder = ruta_inorder;
 
             _read_pre_order();
             _read_in_order();
             dictionary_tree = _buildTree(0, preorder_tree.size() - 1);
-            
 
         }
         
-
+        /**
+         * @brief funcion para codificar el archivo
+         * Toma la ruta especificada y se encarga de codificar el archivo
+         * Los archivos generados se tratan de binarios
+         * 
+         */
         void enconde() { 
             struct MinHeapNode *left, *right, *top; 
 
@@ -115,7 +130,10 @@ class HuffmanCoding{
 
 
         private:
-
+        /**
+         * @brief funcion para guardar el recorrido en pre order
+         * esta funcion desencadena las funciones recursivas del mismo nombre pero distinto parametros
+         */
         void _store_pre_order() { 
             struct MinHeapNode* root = minHeap.top();
             std::string str;
@@ -135,7 +153,12 @@ class HuffmanCoding{
             _store_pre_order(root->right, str + "0"); 
         } 
 
-
+        /**
+         * @brief funcion para guardar el recorrido en pre order
+         * 
+         * @param root raiz del sub arbol a recorrer
+         * @param str clave de huffman hasta el momento
+         */
         void _store_pre_order(struct MinHeapNode* root, std::string str) { 
 
             if (!root) 
@@ -154,6 +177,10 @@ class HuffmanCoding{
             _store_pre_order(root->right, str + "0"); 
         } 
 
+        /**
+         * @brief Funcion encargada de leer los archivos binarios en pre_order
+         * 
+         */
         void _read_pre_order(){
             pre_order_file.close();
             pre_order_read.open(ruta_preorder, std::ios::in | std::ios::binary);
@@ -161,14 +188,18 @@ class HuffmanCoding{
 
             while (pre_order_read.peek() != EOF){
                 char answer_char;
-                unsigned short int answer_int;
+                unsigned int answer_int;
                 pre_order_read.read(reinterpret_cast<char*> (&answer_char), sizeof(char));
-                pre_order_read.read(reinterpret_cast<char*> (&answer_int), sizeof(unsigned short int));
+                pre_order_read.read(reinterpret_cast<char*> (&answer_int), sizeof(unsigned int));
 
                 MinHeapNode a(answer_char, answer_int);
                 preorder_tree.push_back(a);
             }
         }
+        /**
+         * @brief funcion para guardar el recorrido en in order
+         * esta funcion desencadena las funciones recursivas del mismo nombre pero distinto parametros
+         */
 
         void _store_in_order() { 
             struct MinHeapNode* root = minHeap.top();
@@ -189,6 +220,12 @@ class HuffmanCoding{
             _store_in_order(root->right, str + "0"); 
         } 
 
+        /**
+         * @brief funcion para guardar el recorrido en in order
+         * 
+         * @param root raiz del sub arbol a recorrer
+         * @param str clave de huffman hasta el momento
+         */
 
         void _store_in_order(struct MinHeapNode* root, std::string str) { 
 
@@ -207,6 +244,10 @@ class HuffmanCoding{
             in_order_file.write(reinterpret_cast<char*> (&(root->freq)), sizeof(root->freq));
             _store_in_order(root->right, str + "0"); 
         } 
+        /**
+         * @brief Funcion encargada de leer los archivos binarios en in_order
+         * 
+         */
 
         void _read_in_order(){
             in_order_file.close();
@@ -215,9 +256,9 @@ class HuffmanCoding{
 
             while (in_order_read.peek() != EOF){
                 char answer_char;
-                unsigned short int answer_int;
+                unsigned int answer_int;
                 in_order_read.read(reinterpret_cast<char*> (&answer_char), sizeof(char));
-                in_order_read.read(reinterpret_cast<char*> (&answer_int), sizeof(unsigned short int));
+                in_order_read.read(reinterpret_cast<char*> (&answer_int), sizeof(unsigned int));
                 
                 MinHeapNode a(answer_char, answer_int);
 
@@ -294,7 +335,10 @@ class HuffmanCoding{
             } 
             return strt;
         } 
-
+        /**
+         * @brief Funcion para escribir el texto en un archivo binario. Genera la compresion.
+         * 
+         */
         void _write_file(){
             file.close();
             file.open("compressed.dat", std::ios::out | std::ios::binary);
@@ -304,6 +348,7 @@ class HuffmanCoding{
                     respuesta += symbols[caracter];
                 }
             }
+                    std::cout << respuesta;
 
             for (int i = 0; i < respuesta.size(); i++){
                 int contador = 0;
