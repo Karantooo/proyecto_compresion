@@ -10,15 +10,17 @@ struct MinHeapNode {
 
 	// Left and right child 
 	MinHeapNode *left, *right; 
+	bool nodo_caracter;
 
 
-	MinHeapNode(char data, unsigned int freq) 
+	MinHeapNode(char data, unsigned int freq, bool nodo_caracter) 
 
 	{ 
 
 		left = right = nullptr; 
 		this->data = data; 
 		this->freq = freq; 
+		this->nodo_caracter = nodo_caracter;
 	} 
 
     bool operator==(const MinHeapNode& otra) const {

@@ -48,8 +48,6 @@ class HuffmanCoding{
             in_order_file.open(ruta_inorder, std::ios::out | std::ios::binary);
             
 
-
-
             while(std::getline(file, word)){
                 // std::cout << word << std::endl;
                 lineas_codificadas.push_back(word);
@@ -77,6 +75,7 @@ class HuffmanCoding{
             _read_pre_order();
             _read_in_order();
             dictionary_tree = _buildTree(0, preorder_tree.size() - 1);
+            _read_file();
 
         }
         
@@ -90,7 +89,7 @@ class HuffmanCoding{
             struct MinHeapNode *left, *right, *top; 
 
             for (auto par : frecuencia_caracter)
-                minHeap.push(new MinHeapNode(par.first, par.second)); 
+                minHeap.push(new MinHeapNode(par.first, par.second, true)); 
 
             // Iterate while size of heap doesn't become 1 
             while (minHeap.size() != 1) { 
@@ -111,7 +110,7 @@ class HuffmanCoding{
                 // to the min heap '$' is a special value 
                 // for internal nodes, not used 
                 top = new MinHeapNode('$', 
-                                    left->freq + right->freq); 
+                                    left->freq + right->freq, false); 
 
                 top->left = left; 
                 top->right = right; 
@@ -137,17 +136,19 @@ class HuffmanCoding{
         void _store_pre_order() { 
             struct MinHeapNode* root = minHeap.top();
             std::string str;
-
+            //dfs(root, "");
             if (!root) 
                 return; 
             
             pre_order_file.write(reinterpret_cast<char*> (&(root->data)), sizeof(root->data));
             pre_order_file.write(reinterpret_cast<char*> (&(root->freq)), sizeof(root->freq));
+            pre_order_file.write(reinterpret_cast<char*> (&(root->nodo_caracter)), sizeof(root->nodo_caracter));
 
 
-            if (root->data != '$'){
+
+            if (root->nodo_caracter)
                 symbols[root->data] = str;
-            } 
+             
 
             _store_pre_order(root->left, str + "1"); 
             _store_pre_order(root->right, str + "0"); 
@@ -166,7 +167,8 @@ class HuffmanCoding{
 
             pre_order_file.write(reinterpret_cast<char*> (&(root->data)), sizeof(root->data));
             pre_order_file.write(reinterpret_cast<char*> (&(root->freq)), sizeof(root->freq));
-            
+            pre_order_file.write(reinterpret_cast<char*> (&(root->nodo_caracter)), sizeof(root->nodo_caracter));
+
 
 
             if (root->data != '$'){
@@ -189,10 +191,14 @@ class HuffmanCoding{
             while (pre_order_read.peek() != EOF){
                 char answer_char;
                 unsigned int answer_int;
+                bool es_caracter;
+                
                 pre_order_read.read(reinterpret_cast<char*> (&answer_char), sizeof(char));
                 pre_order_read.read(reinterpret_cast<char*> (&answer_int), sizeof(unsigned int));
+                pre_order_read.read(reinterpret_cast<char*> (&es_caracter), sizeof(bool));
 
-                MinHeapNode a(answer_char, answer_int);
+
+                MinHeapNode a(answer_char, answer_int, es_caracter);
                 preorder_tree.push_back(a);
             }
         }
@@ -208,15 +214,22 @@ class HuffmanCoding{
             if (!root) 
                 return; 
             
-            in_order_file.write(reinterpret_cast<char*> (&(root->data)), sizeof(root->data));
-            in_order_file.write(reinterpret_cast<char*> (&(root->freq)), sizeof(root->freq));
 
 
-            if (root->data != '$'){
+
+            if (root->nodo_caracter){
                 symbols[root->data] = str;
             } 
 
             _store_in_order(root->left, str + "1"); 
+
+            // std::cout << root->data << " " << root->freq << " " << root->nodo_caracter;
+            // std::cout << str << std::endl;
+
+            in_order_file.write(reinterpret_cast<char*> (&(root->data)), sizeof(root->data));
+            in_order_file.write(reinterpret_cast<char*> (&(root->freq)), sizeof(root->freq));
+            in_order_file.write(reinterpret_cast<char*> (&(root->nodo_caracter)), sizeof(root->nodo_caracter));
+
             _store_in_order(root->right, str + "0"); 
         } 
 
@@ -232,16 +245,20 @@ class HuffmanCoding{
             if (!root) 
                 return; 
 
-            
-
-
             if (root->data != '$'){
                 symbols[root->data] = str;
             } 
 
             _store_in_order(root->left, str + "1"); 
+
+            // std::cout << root->data << " " << root->freq << " " << root->nodo_caracter;
+            // std::cout << str << std::endl;
+
+
             in_order_file.write(reinterpret_cast<char*> (&(root->data)), sizeof(root->data));
             in_order_file.write(reinterpret_cast<char*> (&(root->freq)), sizeof(root->freq));
+            in_order_file.write(reinterpret_cast<char*> (&(root->nodo_caracter)), sizeof(root->nodo_caracter));
+
             _store_in_order(root->right, str + "0"); 
         } 
         /**
@@ -257,12 +274,14 @@ class HuffmanCoding{
             while (in_order_read.peek() != EOF){
                 char answer_char;
                 unsigned int answer_int;
+                bool es_caracter;
                 in_order_read.read(reinterpret_cast<char*> (&answer_char), sizeof(char));
                 in_order_read.read(reinterpret_cast<char*> (&answer_int), sizeof(unsigned int));
-                
-                MinHeapNode a(answer_char, answer_int);
+                in_order_read.read(reinterpret_cast<char*> (&es_caracter), sizeof(bool));
 
-                in_order_read.read(reinterpret_cast<char*> (&a), sizeof(MinHeapNode));
+                
+                MinHeapNode a(answer_char, answer_int, es_caracter);
+
                 inorder_tree.push_back(a);
             }
         }
@@ -290,12 +309,12 @@ class HuffmanCoding{
         { 
         
             if (inStrt > inEnd) 
-                return NULL; 
+                return nullptr; 
         
             /* Pick current node from Preorder
             traversal using preIndex 
             and increment preIndex */
-            MinHeapNode* tNode = new MinHeapNode(1,0); 
+            MinHeapNode* tNode = new MinHeapNode(1,0, false); 
             *tNode = preorder_tree[preIndex++]; 
 
             /* If this node has no children then return */
@@ -346,9 +365,10 @@ class HuffmanCoding{
             for (auto linea : lineas_codificadas){
                 for (auto caracter : linea){
                     respuesta += symbols[caracter];
+                    std::cout << caracter << ":" << symbols[caracter] << std::endl;
                 }
             }
-                    std::cout << respuesta;
+            std::cout << "\n\n\n";
 
             for (int i = 0; i < respuesta.size(); i++){
                 int contador = 0;
@@ -361,10 +381,60 @@ class HuffmanCoding{
                 }
                 file.write(reinterpret_cast<const char*>(&chunk_respuesta), sizeof(chunk_respuesta));
             }
+            file.close();
+        }
+
+
+        void _read_file(){
+            //Cargamos el string
+            std::string respuesta_en_bits;
+            std::fstream file_comprimido;
+            file_comprimido.open(ruta, std::ios::in | std::ios::binary);
+            while (file_comprimido.peek() != EOF){
+                std::bitset<128> chunk_respuesta(0);
+                file_comprimido.read(reinterpret_cast<char*> (&chunk_respuesta), sizeof(std::bitset<128>));
+                respuesta_en_bits += chunk_respuesta.to_string();
+            }
+            std::cout << respuesta_en_bits << "\n\n\n";
+
+            std::string respuesta = "";
+            MinHeapNode* busqueda_caracter = dictionary_tree;
+            dfs(dictionary_tree, "");
+            for (auto caracter : respuesta_en_bits){
+                if (busqueda_caracter == nullptr){
+                    std::cerr << "A ocurrido un error al leer el archivo.\n";
+                    std::cerr << "Posible corrupcion del archivo comprimido o de las claves\n";
+                    exit(1);
+                }
+
+                if (busqueda_caracter->nodo_caracter){
+                    //std::cout << busqueda_caracter->data;
+                    respuesta += busqueda_caracter->data;
+                    busqueda_caracter = dictionary_tree;
+                    continue;
+                }
+                if (caracter == '1')
+                    busqueda_caracter = busqueda_caracter->left;
+                else
+                    busqueda_caracter = busqueda_caracter->right;
+                
+            }
+            // std::cout << respuesta;
+            std::ofstream decompressed_file;
+            decompressed_file.open("decompressed.txt");
+            decompressed_file << respuesta;
+
+
+        }
+
+        void dfs(MinHeapNode* root, std::string str){
+            if (root == nullptr)
+                return;
+            dfs(root->left, str + '1');
+            // std::cout << root->data << " " << root->freq << " " << root->nodo_caracter;
+            // std::cout << str << std::endl;
+            dfs(root->right, str + '0');
         }
 
 
 };
-
-
-
