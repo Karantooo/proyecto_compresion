@@ -3,10 +3,12 @@
 
 #include <bits/stdc++.h>
 
+const int N = 26;
+
 struct TrieNode {
 
     // pointer array for child nodes of each node
-    TrieNode* childNode[26];
+    TrieNode* childNode[N];
 
     // Used for indicating ending of string
     bool wordEnd;
@@ -18,7 +20,7 @@ struct TrieNode {
         // initialize every index of childNode array with
         // NULL
         wordEnd = false;
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < N; i++) {
             childNode[i] = NULL;
         }
     }
