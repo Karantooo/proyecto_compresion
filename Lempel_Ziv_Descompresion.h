@@ -40,7 +40,7 @@ std::string Lempel_Ziv(std::string codificacion){
         }
         else if(c == ')'){
             if(codificacion[i - 1] != '0'){
-                for(int j = stoi(posicion); j < stoi(cantidad); j++){
+                for(int j = stoi(posicion); j <= stoi(cantidad); j++){
                     mensaje += mensaje[j];
                 }
                 posicion.clear();
