@@ -49,7 +49,6 @@ class HuffmanCoding{
             
 
             while(std::getline(file, word)){
-                // std::cout << word << std::endl;
                 lineas_codificadas.push_back(word);
                 for (auto character : word){
                     if (frecuencia_caracter.find(character) == frecuencia_caracter.end())
@@ -75,7 +74,6 @@ class HuffmanCoding{
             _read_pre_order();
             _read_in_order();
             dictionary_tree = _buildTree(0, preorder_tree.size() - 1);
-            _read_file();
 
         }
         
@@ -126,6 +124,43 @@ class HuffmanCoding{
 
         }
 
+        void decode(){
+            //Cargamos el string
+            std::string respuesta_en_bits;
+            std::fstream file_comprimido;
+            file_comprimido.open(ruta, std::ios::in | std::ios::binary);
+            while (file_comprimido.peek() != EOF){
+                std::bitset<128> chunk_respuesta(0);
+                file_comprimido.read(reinterpret_cast<char*> (&chunk_respuesta), sizeof(std::bitset<128>));
+                respuesta_en_bits += chunk_respuesta.to_string();
+            }
+
+            std::string respuesta = "";
+            MinHeapNode* busqueda_caracter = dictionary_tree;
+            for (auto caracter : respuesta_en_bits){
+                if (busqueda_caracter == nullptr){
+                    std::cerr << "A ocurrido un error al leer el archivo.\n";
+                    std::cerr << "Posible corrupcion del archivo comprimido o de las claves\n";
+                    exit(1);
+                }
+
+                if (busqueda_caracter->nodo_caracter){
+                    respuesta += busqueda_caracter->data;
+                    busqueda_caracter = dictionary_tree;
+                    
+                }
+                if (caracter == '1')
+                    busqueda_caracter = busqueda_caracter->left;
+                else
+                    busqueda_caracter = busqueda_caracter->right;
+                
+            }
+            std::ofstream decompressed_file;
+            decompressed_file.open("decompressed.txt");
+            decompressed_file << respuesta;
+
+
+        }
 
 
         private:
@@ -223,8 +258,6 @@ class HuffmanCoding{
 
             _store_in_order(root->left, str + "1"); 
 
-            // std::cout << root->data << " " << root->freq << " " << root->nodo_caracter;
-            // std::cout << str << std::endl;
 
             in_order_file.write(reinterpret_cast<char*> (&(root->data)), sizeof(root->data));
             in_order_file.write(reinterpret_cast<char*> (&(root->freq)), sizeof(root->freq));
@@ -251,8 +284,6 @@ class HuffmanCoding{
 
             _store_in_order(root->left, str + "1"); 
 
-            // std::cout << root->data << " " << root->freq << " " << root->nodo_caracter;
-            // std::cout << str << std::endl;
 
 
             in_order_file.write(reinterpret_cast<char*> (&(root->data)), sizeof(root->data));
@@ -365,10 +396,8 @@ class HuffmanCoding{
             for (auto linea : lineas_codificadas){
                 for (auto caracter : linea){
                     respuesta += symbols[caracter];
-                    std::cout << caracter << ":" << symbols[caracter] << std::endl;
                 }
             }
-            std::cout << "\n\n\n";
 
             for (int i = 0; i < respuesta.size(); i++){
                 int contador = 0;
@@ -384,58 +413,6 @@ class HuffmanCoding{
             file.close();
         }
 
-
-        void _read_file(){
-            //Cargamos el string
-            std::string respuesta_en_bits;
-            std::fstream file_comprimido;
-            file_comprimido.open(ruta, std::ios::in | std::ios::binary);
-            while (file_comprimido.peek() != EOF){
-                std::bitset<128> chunk_respuesta(0);
-                file_comprimido.read(reinterpret_cast<char*> (&chunk_respuesta), sizeof(std::bitset<128>));
-                respuesta_en_bits += chunk_respuesta.to_string();
-            }
-            std::cout << respuesta_en_bits << "\n\n\n";
-
-            std::string respuesta = "";
-            MinHeapNode* busqueda_caracter = dictionary_tree;
-            dfs(dictionary_tree, "");
-            for (auto caracter : respuesta_en_bits){
-                if (busqueda_caracter == nullptr){
-                    std::cerr << "A ocurrido un error al leer el archivo.\n";
-                    std::cerr << "Posible corrupcion del archivo comprimido o de las claves\n";
-                    exit(1);
-                }
-
-                if (busqueda_caracter->nodo_caracter){
-                    //std::cout << busqueda_caracter->data;
-                    respuesta += busqueda_caracter->data;
-                    busqueda_caracter = dictionary_tree;
-                    
-                }
-                if (caracter == '1')
-                    busqueda_caracter = busqueda_caracter->left;
-                else
-                    busqueda_caracter = busqueda_caracter->right;
-                
-            }
-            std::cout << respuesta;
-            std::ofstream decompressed_file;
-            dfs(dictionary_tree, "");
-            decompressed_file.open("decompressed.txt");
-            decompressed_file << respuesta;
-
-
-        }
-
-        void dfs(MinHeapNode* root, std::string str){
-            if (root == nullptr)
-                return;
-            dfs(root->left, str + '1');
-            // std::cout << root->data << " " << root->freq << " " << root->nodo_caracter;
-            // std::cout << str << std::endl;
-            dfs(root->right, str + '0');
-        }
 
 
 };
