@@ -49,6 +49,7 @@ class HuffmanCoding{
             
 
             while(std::getline(file, word)){
+                word += '\n';
                 lineas_codificadas.push_back(word);
                 for (auto character : word){
                     if (frecuencia_caracter.find(character) == frecuencia_caracter.end())
@@ -58,6 +59,7 @@ class HuffmanCoding{
                     }
 
                 }
+                (lineas_codificadas.end()-1)->pop_back();
         }
 
         /**
@@ -134,7 +136,6 @@ class HuffmanCoding{
                 file_comprimido.read(reinterpret_cast<char*> (&chunk_respuesta), sizeof(std::bitset<128>));
                 respuesta_en_bits += chunk_respuesta.to_string();
             }
-
             std::string respuesta = "";
             MinHeapNode* busqueda_caracter = dictionary_tree;
             for (auto caracter : respuesta_en_bits){
@@ -408,6 +409,7 @@ class HuffmanCoding{
                     i++;
                     contador++;
                 }
+                i--;
                 file.write(reinterpret_cast<const char*>(&chunk_respuesta), sizeof(chunk_respuesta));
             }
             file.close();
