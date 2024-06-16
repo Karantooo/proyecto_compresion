@@ -19,7 +19,7 @@ std::string Lempel_Ziv(std::string codificacion){
         c = codificacion[i];
         if(c == '('){
             for(int j = i + 1; codificacion[j] != ','; j++){
-                if(isalpha(codificacion[j])){
+                if(!isdigit(codificacion[j])){
                     mensaje += codificacion[j];
                     break;
                 }
