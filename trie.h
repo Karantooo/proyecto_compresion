@@ -3,12 +3,16 @@
 
 #include <bits/stdc++.h>
 
-const int N = 26;
+const int CHARACTER_NUMBER = 256;
 
+/**
+ * @brief 
+ * 
+ */
 struct TrieNode {
 
     // pointer array for child nodes of each node
-    TrieNode* childNode[27];
+    TrieNode* childNode[CHARACTER_NUMBER];
 
     // Used for indicating ending of string
     bool wordEnd;
@@ -21,7 +25,7 @@ struct TrieNode {
         // initialize every index of childNode array with
         // NULL
         wordEnd = false;
-        for (int i = 0; i < 27; i++) {
+        for (int i = 0; i < CHARACTER_NUMBER; i++) {
             childNode[i] = NULL;
         }
     }
@@ -33,12 +37,20 @@ struct TrieNode {
         // initialize every index of childNode array with
         // NULL
         wordEnd = false;
-        for (int i = 0; i < 27; i++) {
+        for (int i = 0; i < CHARACTER_NUMBER; i++) {
             childNode[i] = NULL;
         }
     }
 };
 
+
+/**
+ * @brief 
+ * 
+ * @param root 
+ * @param key 
+ * @param begin 
+ */
 void insert_key(TrieNode* root, std::string key, int begin)
 {
     // Initialize the currentNode pointer with the root node and the end index of the word.
@@ -50,18 +62,7 @@ void insert_key(TrieNode* root, std::string key, int begin)
         end++;
         // Check if the node exist for the current
         // character in the Trie.
-
-        
-        if(c == ' ' && currentNode->childNode[26] == NULL){
-            // If node for current character does not exist
-            // then make a new node
-            TrieNode* newNode = new TrieNode();
-
-            // Keep the reference for the newly created
-            // node.
-            currentNode->childNode[26] = newNode;
-        }
-        else if (c != ' ' && currentNode->childNode[tolower(c) - 'a'] == NULL) {
+        if (currentNode->childNode[c] == NULL) {
 
             // If node for current character does not exist
             // then make a new node
@@ -69,18 +70,15 @@ void insert_key(TrieNode* root, std::string key, int begin)
 
             // Keep the reference for the newly created
             // node.
-            currentNode->childNode[tolower(c) - 'a'] = newNode;
+            currentNode->childNode[c] = newNode;
            
             
         }
 
         // Now, move the current node pointer to the newly
         // created node.
-        if(c != ' '){
-                currentNode = currentNode->childNode[tolower(c) - 'a'];
-            } else{
-                currentNode = currentNode->childNode[26];
-            }
+        
+        currentNode = currentNode->childNode[c];
     }
 
     // Increment the wordEndCount for the last currentNode
@@ -92,24 +90,25 @@ void insert_key(TrieNode* root, std::string key, int begin)
     currentNode->end = end;
 }
 
+/**
+ * @brief 
+ * 
+ * @param root 
+ * @param key 
+ * @return std::pair<int, int>* 
+ */
 std::pair<int, int>* search_key(TrieNode* root, std::string key)
 {
     // Initialize the currentNode pointer with the root node, the pair that will be returned and a bool value to verify if the word is only a character
     TrieNode* currentNode = root;
     std::pair<int, int>* word_index_range = new std::pair<int, int>();
-    bool is_char = key.size() == 1;
 
     // Iterate across the length of the string
     for (auto c : key) {
 
         // Check if the node exist for the current
         // character in the Trie.
-        if(c == ' ' && currentNode->childNode[26] == NULL){
-            // Given word does not exist in Trie
-            return nullptr;
-        }
-
-        if (c != ' ' && currentNode->childNode[tolower(c) - 'a'] == NULL) {
+        if (currentNode->childNode[c] == NULL) {
 
             // Given word does not exist in Trie
             return nullptr;
@@ -117,11 +116,8 @@ std::pair<int, int>* search_key(TrieNode* root, std::string key)
 
         // Move the currentNode pointer to the already
         // existing node for current character.
-        if(c != ' '){
-                currentNode = currentNode->childNode[tolower(c) - 'a'];
-            } else{
-                currentNode = currentNode->childNode[26];
-            }
+        
+        currentNode = currentNode->childNode[c];
     }
 
     // If the final character of key is the final of a word, returns begin and end index, if not return a nullptr
