@@ -18,6 +18,12 @@ std::string Lempel_Ziv(std::string codificacion){
         if(isalpha(c)){
             mensaje += c;
         }
+        else if(isdigit(c)){
+            for(int j = c; j < codificacion[i + 1]; j++){
+                mensaje += codificacion[j];
+            }
+        }
     }
+    return mensaje;
 }
 #endif
