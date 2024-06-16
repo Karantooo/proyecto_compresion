@@ -10,65 +10,108 @@
  * @param mensaje 
  * @return std::pair<TrieNode, std::string> 
  */
-std::string Lempel_Ziv(std::string mensaje){
+std::string Lempel_ziv_compresion(std::string mensaje){
+
     TrieNode* compression_trie = new TrieNode();
     std::string codificacion;
-    std::string palabra;
-    std::string tmp_codificacion;
-    std::string cod_espacio;
+    std::string subcadena;
     int largo = mensaje.size();
+    bool codificando_subcadena = false;
+
     for(int i=0 ; i<largo ; i++){
-        std::pair<int, int>* rango_caracter;
+
         std::string tmp_char(1, mensaje[i]);
-        rango_caracter = search_key(compression_trie, tmp_char);
-    
-        //Verifica si el caracter aparecio anteriormente y crea una codificacion temporal caracter a caracter
+        std::pair<int, int>* rango_caracter = search_key(compression_trie, tmp_char);
+        std::pair<int, int>* rango_cadena;
+
+        //Si el caracter mensaje[i] no aparecio anteriormente.
         if(rango_caracter == nullptr){
-            std::string tmp_char(1, mensaje[i]);
-            insert_key(compression_trie, tmp_char, i);
-            if(tmp_char == " "){
-                cod_espacio = "("+tmp_char+","+std::to_string(0)+")";
+
+            //si no hay una subcadena en formacion, se ingresa el caracter mensaje[i] al trie y se agrega a la compresion.
+            if(!codificando_subcadena){
+
+                insert_key(compression_trie, tmp_char, i);
+                codificacion.append("("+tmp_char+","+std::to_string(0)+")");
+
+            //Si hay una subcadena en formacion, se agrega la compresion de la subcadena formada y luego la de mensaje[i], ademas mensaje[i] se agrega al trie.
             }else{
-                tmp_codificacion.append("("+tmp_char+","+std::to_string(0)+")");
+
+                insert_key(compression_trie, tmp_char, i);
+                rango_cadena = search_key(compression_trie, subcadena);
+                subcadena.clear();
+                codificacion.append("("+std::to_string(rango_cadena->first)+","+std::to_string(rango_cadena->second)+")");
+                codificacion.append("("+tmp_char+","+std::to_string(0)+")");
+                codificando_subcadena = false;
+
             }
+
+        //Si mensaje[i] ya aparecio anteriormente.
         } else{
-            if(tmp_char == " "){
-                cod_espacio = "("+std::to_string(rango_caracter->first)+","+std::to_string(rango_caracter->second)+")";
+
+            //Si no hay una subcadena en formación, se crea una subcadena y se declara en una variable que hay una subcadena en formacion.
+            if(!codificando_subcadena){
+
+                if(i == largo - 1){
+
+                    codificacion.append("("+std::to_string(rango_caracter->first)+","+std::to_string(rango_caracter->second)+")");
+                    break;
+
+                }
+                subcadena.append(tmp_char);
+                codificando_subcadena = true;
+                
+
+            //Si hay una subcadena en formacion.
             }else{
-                tmp_codificacion.append("("+std::to_string(rango_caracter->first)+","+std::to_string(rango_caracter->second)+")");
+                
+                //Se verifica si la subcadena concatenada a mensaje[i] forma una subcadena que haya aparecido antes en el texto, si no ha aparecido antes, se agrega la subcadena sin mensaje[i], se limpia el contenido de la subcadena y se le agrega mensaje[i].
+                rango_cadena = search_key(compression_trie, subcadena + tmp_char);
+                if(rango_cadena == nullptr){
+
+                    rango_cadena = search_key(compression_trie, subcadena);
+                    codificacion.append("("+std::to_string(rango_cadena->first)+","+std::to_string(rango_cadena->second)+")");
+                    subcadena.clear();
+                    subcadena.append(tmp_char);
+
+                    //Si se llega al ultimo caracter del mensaje se añade a la codificacion el ultimo caracter.
+                    if(i == largo - 1){
+
+                        codificacion.append("("+std::to_string(rango_caracter->first)+","+std::to_string(rango_caracter->second)+")");
+                        break;
+
+                    }
+
+                //si la concatenacion forma una subcadena que haya aparecido antes, la subcadena pasa a ser la concatenacion.
+                }else{
+
+                    subcadena.append(tmp_char);
+                    //Si se llega al ultimo caracter del mensaje se añade a la codificacion toda la subcadena formada hasta el momento.
+                    if(i == largo - 1){
+                        
+                        codificacion.append("("+std::to_string(rango_cadena->first)+","+std::to_string(rango_cadena->second)+")");
+                        
+                    }
+
+                }
+
             }
-            
         }
 
-        //Si el caracter es distinto al 'espacio' se añade el caracter a la palabra en formacion
-        if(mensaje[i] != ' '){
-            std::string tmp_char(1, mensaje[i]);
-            palabra.append(tmp_char);
-        //Si el caracter es un espacio y la palabra no está vacia, o si es la ultima palabra, guardo la palabra.
-        }
-        if((mensaje[i] == ' ' && !palabra.empty()) || i==largo-1){
-            std::pair<int, int>* rango_palabra;
-            //El metodo find devuelve un pair con un indice al inicio y al final de la palabra, o nullptr si no se encontro antes en el mensaje
-            rango_palabra = search_key(compression_trie, palabra);
-            //Si la palabra estaba en el trie, se añade a la codificacion un parentesis con el indice inicial y final
-            if(rango_palabra!=nullptr){
-                codificacion.append("("+std::to_string(rango_palabra->first)+","+std::to_string(rango_palabra->second)+")");
-                if(mensaje[i]==' '){
-                    codificacion.append(cod_espacio);
-                }
-            //Si no se encontro antes se añade la palabra al trie y se agregan sus caracteres a la compresion individualmente
-            }else{
-                codificacion.append(tmp_codificacion);
-                if(mensaje[i]==' '){
-                    codificacion.append(cod_espacio);
-                }
-                insert_key(compression_trie, palabra, i-palabra.size());
+        //Se agregan al trie todas las subcadenas que se puedan formar con los i primeros caracteres del mensaje, y que posiblemente no se hayan formado antes.
+        for(int j=0 ; j<i ; j++){
+            int inicio = i - (j + 1);
+            std::string tmp_sub = mensaje.substr(inicio, j + 2);
+            rango_cadena = search_key(compression_trie, tmp_sub);
+            if(!rango_cadena){
+                insert_key(compression_trie, tmp_sub, inicio);
             }
-            //Se reinicia la palabra y la codificacion de caracteres guardados
-            tmp_codificacion.clear();
-            palabra.clear();
         }
+
+        delete rango_cadena;
+        delete rango_caracter;
     }
+
+    delete compression_trie;
 
     return codificacion;
 }
