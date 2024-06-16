@@ -411,7 +411,7 @@ class HuffmanCoding{
                     //std::cout << busqueda_caracter->data;
                     respuesta += busqueda_caracter->data;
                     busqueda_caracter = dictionary_tree;
-                    continue;
+                    
                 }
                 if (caracter == '1')
                     busqueda_caracter = busqueda_caracter->left;
@@ -419,8 +419,9 @@ class HuffmanCoding{
                     busqueda_caracter = busqueda_caracter->right;
                 
             }
-            // std::cout << respuesta;
+            std::cout << respuesta;
             std::ofstream decompressed_file;
+            dfs(dictionary_tree, "");
             decompressed_file.open("decompressed.txt");
             decompressed_file << respuesta;
 
