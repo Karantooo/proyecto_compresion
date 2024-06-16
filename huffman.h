@@ -31,6 +31,8 @@ class HuffmanCoding{
 
         std::vector<std::string> lineas_codificadas;
 
+        unsigned short int exceso_ultimo_chunk;
+
 
         
     public:
@@ -136,6 +138,13 @@ class HuffmanCoding{
                 file_comprimido.read(reinterpret_cast<char*> (&chunk_respuesta), sizeof(std::bitset<128>));
                 respuesta_en_bits += chunk_respuesta.to_string();
             }
+            //Leemos el archivos para saber cuantos 0 no forman parte de la codificacion y son solo ruido
+            std::fstream bits_muertos;
+            bits_muertos.open("bits_muertos.dat", std::ios::in | std::ios::binary);
+            bits_muertos.read(reinterpret_cast<char*>(&exceso_ultimo_chunk), sizeof(exceso_ultimo_chunk));
+            bits_muertos.close();
+            respuesta_en_bits = respuesta_en_bits.substr(0, respuesta_en_bits.length() - exceso_ultimo_chunk);
+
             std::string respuesta = "";
             MinHeapNode* busqueda_caracter = dictionary_tree;
             for (auto caracter : respuesta_en_bits){
@@ -158,6 +167,8 @@ class HuffmanCoding{
             }
             std::ofstream decompressed_file;
             decompressed_file.open("decompressed.txt");
+            
+
             decompressed_file << respuesta;
 
 
@@ -175,7 +186,8 @@ class HuffmanCoding{
             //dfs(root, "");
             if (!root) 
                 return; 
-            
+
+            //Se guarda la cantidad de bits inutiles que se generan en el ultimo chunk
             pre_order_file.write(reinterpret_cast<char*> (&(root->data)), sizeof(root->data));
             pre_order_file.write(reinterpret_cast<char*> (&(root->freq)), sizeof(root->freq));
             pre_order_file.write(reinterpret_cast<char*> (&(root->nodo_caracter)), sizeof(root->nodo_caracter));
@@ -250,8 +262,6 @@ class HuffmanCoding{
             if (!root) 
                 return; 
             
-
-
 
             if (root->nodo_caracter){
                 symbols[root->data] = str;
@@ -401,7 +411,7 @@ class HuffmanCoding{
             }
 
             for (int i = 0; i < respuesta.size(); i++){
-                int contador = 0;
+                int contador = 0;  
                 std::bitset<128> chunk_respuesta(0);
                 while (contador < 128 && i < respuesta.size()){
                     bool answer = (respuesta[i] == '1')? true : false;
@@ -410,8 +420,13 @@ class HuffmanCoding{
                     contador++;
                 }
                 i--;
+                exceso_ultimo_chunk = 127 - contador; 
                 file.write(reinterpret_cast<const char*>(&chunk_respuesta), sizeof(chunk_respuesta));
             }
+            std::fstream bits_muertos;
+            bits_muertos.open("bits_muertos.dat", std::ios::out | std::ios::binary);
+            bits_muertos.write(reinterpret_cast<char*>(&exceso_ultimo_chunk), sizeof(exceso_ultimo_chunk));
+            bits_muertos.close();
             file.close();
         }
 
