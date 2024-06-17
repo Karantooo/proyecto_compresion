@@ -1,14 +1,14 @@
-#ifndef FLAG_PAIR.H
-#define FLAG_PAIR.H
+#ifndef FLAG_PAIR_H
+#define FLAG_PAIR_H
 
 class flag_pair{
 public:
-    bool char_flag;
+    bool int_flag;
     int index;
     int module;
 public:
-    flag_pair();
-    flag_pair(bool char_flag, int index, int module) : char_flag(char_flag), index(index), module(module){};
+    flag_pair(){};
+    flag_pair(bool int_flag, int index, int module) : int_flag(int_flag), index(index), module(module){};
 };
 
 #endif

@@ -45,7 +45,12 @@ void Lempel_ziv_compresion(std::string ruta_archivo){
                 if(!codificando_subcadena){
 
                     insert_key(compression_trie, tmp_char, i);
-                    flag_pair tmp_pair(true, static_cast<unsigned char>(c), 0);
+                    flag_pair tmp_pair;
+                    if(isdigit(c)){
+                        tmp_pair = flag_pair(true, static_cast<unsigned char>(c), 0);
+                    }else{
+                        tmp_pair = flag_pair(false, static_cast<unsigned char>(c), 0);
+                    }
                     compresion.push_back(tmp_pair);
 
                 //Si hay una subcadena en formacion, se agrega la compresion de la subcadena formada y luego la de mensaje[i], ademas mensaje[i] se agrega al trie.
@@ -54,9 +59,13 @@ void Lempel_ziv_compresion(std::string ruta_archivo){
                     insert_key(compression_trie, tmp_char, i);
                     rango_cadena = search_key(compression_trie, subcadena);
                     subcadena.clear();
-                    flag_pair tmp_pair(false, rango_cadena->first, rango_cadena->second);
+                    flag_pair tmp_pair(true, rango_cadena->first, rango_cadena->second);
                     compresion.push_back(tmp_pair);
-                    flag_pair tmp_pair(true, static_cast<unsigned char>(c), 0);
+                    if(isdigit(c)){
+                        tmp_pair = flag_pair(true, static_cast<unsigned char>(c), 0);
+                    }else{
+                        tmp_pair = flag_pair(false, static_cast<unsigned char>(c), 0);
+                    }
                     compresion.push_back(tmp_pair);
                     codificando_subcadena = false;
 
@@ -70,7 +79,7 @@ void Lempel_ziv_compresion(std::string ruta_archivo){
 
                     if(i == largo - 1){
 
-                        flag_pair tmp_pair(false, rango_caracter->first, rango_caracter->second);
+                        flag_pair tmp_pair(true, rango_caracter->first, rango_caracter->second);
                         compresion.push_back(tmp_pair);
                         break;
 
@@ -87,7 +96,7 @@ void Lempel_ziv_compresion(std::string ruta_archivo){
                     if(rango_cadena == nullptr){
 
                         rango_cadena = search_key(compression_trie, subcadena);
-                        flag_pair tmp_pair(false, rango_cadena->first, rango_cadena->second);
+                        flag_pair tmp_pair(true, rango_cadena->first, rango_cadena->second);
                         compresion.push_back(tmp_pair);
                         subcadena.clear();
                         subcadena.append(tmp_char);
@@ -95,7 +104,7 @@ void Lempel_ziv_compresion(std::string ruta_archivo){
                         //Si se llega al ultimo caracter del mensaje se añade a la codificacion el ultimo caracter.
                         if(i == largo - 1){
 
-                            flag_pair tmp_pair(false, rango_caracter->first, rango_caracter->second);
+                            tmp_pair = flag_pair(true, rango_caracter->first, rango_caracter->second);
                             compresion.push_back(tmp_pair);
                             break;
 
@@ -108,7 +117,7 @@ void Lempel_ziv_compresion(std::string ruta_archivo){
                         //Si se llega al ultimo caracter del mensaje se añade a la codificacion toda la subcadena formada hasta el momento.
                         if(i == largo - 1){
                             
-                            flag_pair tmp_pair(false, rango_cadena->first, rango_cadena->second);
+                            flag_pair tmp_pair(true, rango_cadena->first, rango_cadena->second);
                             compresion.push_back(tmp_pair);
                             
                         }
@@ -137,7 +146,7 @@ void Lempel_ziv_compresion(std::string ruta_archivo){
                     insert_key(compression_trie, tmp_sub, inicio);
 
                 }
-                if(j == 10){
+                if(j == 5){
                     break;
                 }
             }
@@ -155,8 +164,24 @@ void Lempel_ziv_compresion(std::string ruta_archivo){
         delete compression_trie;
 
         //Guardar la codificacion en un archivo binario
+        std::fstream file1;
+        file1.open("LZ_compression.bin", std::ios::out | std::ios::binary);
+        if(file1){
 
-        std::ofstream file("LZ_compression.txt");
+            int tamano = compresion.size();
+            for(int i=0 ; i<tamano ; i++){
+
+                flag_pair tmp_pair = compresion[i];
+                file1.write(reinterpret_cast<char*>(&(tmp_pair.int_flag)), sizeof(bool));
+                file1.write(reinterpret_cast<char*>(&(tmp_pair.index)), sizeof(int));
+                file1.write(reinterpret_cast<char*>(&(tmp_pair.module)), sizeof(int));
+
+            }
+            file1.close();
+
+        }else{
+            std::cerr << "Error al abrir el archivo.";
+        }
 
     }else{
         std::cerr << "No se pudo abrir el archivo." << std::endl;
