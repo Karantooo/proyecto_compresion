@@ -8,14 +8,33 @@
  * @brief 
  * 
  * @param mensaje 
- * @return std::string 
+
  */
-std::string Lempel_Ziv(std::string codificacion){
+void decode(std::string ruta_archivo){
     std::string mensaje;
-    std::string posicion;
-    std::string cantidad;
-    char c;
-    for(int i = 0; i < codificacion.length(); i++){
+    std::fstream file;
+    file.open(ruta_archivo, std::ios::in | std::ios::binary);
+    std::fstream decodificado;
+    decodificado.open("decode.txt");
+    while(file.peek() != EOF){
+        bool flag;
+        int index;
+        int module;
+        file.read(reinterpret_cast<char *> (&flag), sizeof(bool));
+        file.read(reinterpret_cast<char *> (&index), sizeof(int));
+        file.read(reinterpret_cast<char *> (&module), sizeof(int));
+        if(flag){
+            char c = index;
+            mensaje += c;
+        }
+        else{
+
+        }
+    }
+    file.close();
+    decodificado.close();
+
+    /*for(int i = 0; i < codificacion.length(); i++){
         c = codificacion[i];
         if(c == '('){
             for(int j = i + 1; codificacion[j] != ','; j++){
@@ -40,7 +59,7 @@ std::string Lempel_Ziv(std::string codificacion){
         }
         else if(c == ')'){
             if(codificacion[i - 1] != '0'){
-                for(int j = stoi(posicion); j <= stoi(cantidad); j++){
+                for(int j = stoi(posicion); j < stoi(cantidad); j++){
                     mensaje += mensaje[j];
                 }
                 posicion.clear();
@@ -49,5 +68,6 @@ std::string Lempel_Ziv(std::string codificacion){
         }
     }
     return mensaje;
+    */
 }
 #endif
