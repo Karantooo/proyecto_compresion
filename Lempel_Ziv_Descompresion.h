@@ -23,14 +23,17 @@ void decode(std::string ruta_archivo){
         file.read(reinterpret_cast<char *> (&flag), sizeof(bool));
         file.read(reinterpret_cast<char *> (&index), sizeof(int));
         file.read(reinterpret_cast<char *> (&module), sizeof(int));
-        if(flag){
+        if(!flag){
             char c = index;
             mensaje += c;
         }
         else{
-
+            for(int i = index; i <= module; i++){
+                mensaje += mensaje[i];
+            }
         }
     }
+    decodificado << mensaje;
     file.close();
     decodificado.close();
 
