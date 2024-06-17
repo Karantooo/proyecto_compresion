@@ -47,7 +47,8 @@ void Lempel_ziv_compresion(std::string ruta_archivo){
                     insert_key(compression_trie, tmp_char, i);
                     flag_pair tmp_pair;
                     if(isdigit(c)){
-                        tmp_pair = flag_pair(true, static_cast<unsigned char>(c), 0);
+                        int n = c - '0';
+                        tmp_pair = flag_pair(true, n, 0);
                     }else{
                         tmp_pair = flag_pair(false, static_cast<unsigned char>(c), 0);
                     }
@@ -62,7 +63,8 @@ void Lempel_ziv_compresion(std::string ruta_archivo){
                     flag_pair tmp_pair(true, rango_cadena->first, rango_cadena->second);
                     compresion.push_back(tmp_pair);
                     if(isdigit(c)){
-                        tmp_pair = flag_pair(true, static_cast<unsigned char>(c), 0);
+                        int n = c - '0';
+                        tmp_pair = flag_pair(true, n, 0);
                     }else{
                         tmp_pair = flag_pair(false, static_cast<unsigned char>(c), 0);
                     }
@@ -146,7 +148,7 @@ void Lempel_ziv_compresion(std::string ruta_archivo){
                     insert_key(compression_trie, tmp_sub, inicio);
 
                 }
-                if(j == 5){
+                if(j == 10){
                     break;
                 }
             }
