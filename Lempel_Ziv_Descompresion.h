@@ -37,4 +37,5 @@ void decode(std::string ruta_archivo){
     file.close();
     decodificado.close();
 }
+
 #endif
