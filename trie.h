@@ -17,7 +17,7 @@ struct TrieNode {
     // Used for indicating ending of string
     bool wordEnd;
     int begin;
-    int end;
+    int module;
 
     TrieNode(){
         // constructor
@@ -29,7 +29,7 @@ struct TrieNode {
             childNode[i] = NULL;
         }
     }
-    TrieNode(int begin, int end) : begin(begin), end(end)
+    TrieNode(int begin, int module) : begin(begin), module(module)
     {
         // constructor
         // initialize the wordEnd variable with false
@@ -56,11 +56,11 @@ void insert_key(TrieNode* root, std::string key, int begin)
     // Initialize the currentNode pointer with the root node and the end index of the word.
     unsigned char tmp_char;
     TrieNode* currentNode = root;
-    int end = begin - 1;
+    int module = 0;
 
     // Iterate across the length of the string
     for (auto c : key) {
-        end++;
+        module++;
         tmp_char = static_cast<unsigned char>(c);
         // Check if the node exist for the current
         // character in the Trie.
@@ -89,7 +89,7 @@ void insert_key(TrieNode* root, std::string key, int begin)
 
     currentNode->wordEnd = true;
     currentNode->begin = begin;
-    currentNode->end = end;
+    currentNode->module = module;
 }
 
 /**
@@ -127,7 +127,7 @@ std::pair<int, int>* search_key(TrieNode* root, std::string key)
     // If the final character of key is the final of a word, returns begin and end index, if not return a nullptr
     if(currentNode->wordEnd == true){
         word_index_range->first = currentNode->begin;
-        word_index_range->second = currentNode->end;
+        word_index_range->second = currentNode->module;
         return word_index_range;
     }else{
         return nullptr;
