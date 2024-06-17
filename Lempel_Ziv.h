@@ -112,17 +112,25 @@ void Lempel_ziv_compresion(std::string ruta_archivo){
 
             //Se agregan al trie todas las subcadenas que se puedan formar con los i primeros caracteres del mensaje, y que posiblemente no se hayan formado antes.
             for(unsigned long j=0 ; j<i ; j++){
+
                 int inicio = i - (j + 1);
                 file.seekg(inicio, std::ios::beg);
                 std::string tmp_sub;
                 for(unsigned long k = 0 ; k<j+2 ; k++){
+
                     file.get(c);
                     std::string file_char(1, c);
                     tmp_sub.append(file_char);
+
                 }
                 rango_cadena = search_key(compression_trie, tmp_sub);
                 if(!rango_cadena){
+
                     insert_key(compression_trie, tmp_sub, inicio);
+
+                }
+                if(j == 10){
+                    break;
                 }
             }
 
