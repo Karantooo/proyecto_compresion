@@ -3,12 +3,11 @@
 
 class flag_pair{
 public:
-    bool int_flag;
     int index;
     int module;
 public:
     flag_pair(){};
-    flag_pair(bool int_flag, int index, int module) : int_flag(int_flag), index(index), module(module){};
+    flag_pair(int index, int module) : index(index), module(module){};
 };
 
 #endif

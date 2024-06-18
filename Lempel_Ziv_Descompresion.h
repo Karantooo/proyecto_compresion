@@ -21,9 +21,11 @@ void decode(std::string ruta_archivo){
         file.read(reinterpret_cast<char*> (&index), sizeof(int));
         file.read(reinterpret_cast<char*> (&module), sizeof(int));
         if(!module){
+
             unsigned char c = static_cast<unsigned char>(index);
             std::string tmp_string(1, c);
             mensaje.append(tmp_string);
+            
         }
         else{
             for(int i = index; i < index + module; i++){

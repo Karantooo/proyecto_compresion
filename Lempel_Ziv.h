@@ -46,12 +46,7 @@ void Lempel_ziv_compresion(std::string ruta_archivo){
 
                     insert_key(compression_trie, tmp_char, i);
                     flag_pair tmp_pair;
-                    if(isdigit(c)){
-                        int n = c - '0';
-                        tmp_pair = flag_pair(true, n, 0);
-                    }else{
-                        tmp_pair = flag_pair(false, static_cast<unsigned char>(c), 0);
-                    }
+                    tmp_pair = flag_pair(static_cast<unsigned char>(c), 0);
                     compresion.push_back(tmp_pair);
 
                 //Si hay una subcadena en formacion, se agrega la compresion de la subcadena formada y luego la de mensaje[i], ademas mensaje[i] se agrega al trie.
@@ -60,14 +55,9 @@ void Lempel_ziv_compresion(std::string ruta_archivo){
                     insert_key(compression_trie, tmp_char, i);
                     rango_cadena = search_key(compression_trie, subcadena);
                     subcadena.clear();
-                    flag_pair tmp_pair(true, rango_cadena->first, rango_cadena->second);
+                    flag_pair tmp_pair(rango_cadena->first, rango_cadena->second);
                     compresion.push_back(tmp_pair);
-                    if(isdigit(c)){
-                        int n = c - '0';
-                        tmp_pair = flag_pair(true, n, 0);
-                    }else{
-                        tmp_pair = flag_pair(false, static_cast<unsigned char>(c), 0);
-                    }
+                    tmp_pair = flag_pair(static_cast<unsigned char>(c), 0);
                     compresion.push_back(tmp_pair);
                     codificando_subcadena = false;
 
@@ -81,7 +71,7 @@ void Lempel_ziv_compresion(std::string ruta_archivo){
 
                     if(i == largo - 1){
 
-                        flag_pair tmp_pair(true, rango_caracter->first, rango_caracter->second);
+                        flag_pair tmp_pair(rango_caracter->first, rango_caracter->second);
                         compresion.push_back(tmp_pair);
                         break;
 
@@ -98,7 +88,7 @@ void Lempel_ziv_compresion(std::string ruta_archivo){
                     if(rango_cadena == nullptr){
 
                         rango_cadena = search_key(compression_trie, subcadena);
-                        flag_pair tmp_pair(true, rango_cadena->first, rango_cadena->second);
+                        flag_pair tmp_pair(rango_cadena->first, rango_cadena->second);
                         compresion.push_back(tmp_pair);
                         subcadena.clear();
                         subcadena.append(tmp_char);
@@ -106,7 +96,7 @@ void Lempel_ziv_compresion(std::string ruta_archivo){
                         //Si se llega al ultimo caracter del mensaje se añade a la codificacion el ultimo caracter.
                         if(i == largo - 1){
 
-                            tmp_pair = flag_pair(true, rango_caracter->first, rango_caracter->second);
+                            tmp_pair = flag_pair(rango_caracter->first, rango_caracter->second);
                             compresion.push_back(tmp_pair);
                             break;
 
@@ -119,7 +109,7 @@ void Lempel_ziv_compresion(std::string ruta_archivo){
                         //Si se llega al ultimo caracter del mensaje se añade a la codificacion toda la subcadena formada hasta el momento.
                         if(i == largo - 1){
                             
-                            flag_pair tmp_pair(true, rango_cadena->first, rango_cadena->second);
+                            flag_pair tmp_pair(rango_cadena->first, rango_cadena->second);
                             compresion.push_back(tmp_pair);
                             
                         }
@@ -174,7 +164,6 @@ void Lempel_ziv_compresion(std::string ruta_archivo){
             for(int i=0 ; i<tamano ; i++){
 
                 flag_pair tmp_pair = compresion[i];
-                file1.write(reinterpret_cast<char*>(&(tmp_pair.int_flag)), sizeof(bool));
                 file1.write(reinterpret_cast<char*>(&(tmp_pair.index)), sizeof(int));
                 file1.write(reinterpret_cast<char*>(&(tmp_pair.module)), sizeof(int));
 
