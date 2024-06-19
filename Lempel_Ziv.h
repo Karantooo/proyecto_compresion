@@ -23,6 +23,7 @@ private:
     int largo_subcadenas;
 public:
     Lempel_ziv(std::string, int);
+    Lempel_ziv(std::string);
     void compress();
     void decompress();
 
@@ -42,6 +43,7 @@ private:
  * @param largo_subcadenas 
  */
 Lempel_ziv::Lempel_ziv(std::string ruta_archivo, int largo_subcadenas) : ruta_archivo(ruta_archivo), largo_subcadenas(largo_subcadenas){}
+Lempel_ziv::Lempel_ziv(std::string ruta_archivo) : ruta_archivo_comprimido(ruta_archivo){}
 
 
 
