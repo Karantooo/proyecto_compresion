@@ -4,10 +4,10 @@
 class flag_pair{
 public:
     int index;
-    int module;
+    unsigned char module;
 public:
     flag_pair(){};
-    flag_pair(int index, int module) : index(index), module(module){};
+    flag_pair(int index, unsigned char module) : index(index), module(module){};
 };
 
 #endif

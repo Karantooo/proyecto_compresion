@@ -17,7 +17,7 @@ struct TrieNode {
     // Used for indicating ending of string
     bool wordEnd;
     int begin;
-    int module;
+    unsigned char module;
 
     TrieNode(){
         // constructor
@@ -29,7 +29,7 @@ struct TrieNode {
             childNode[i] = NULL;
         }
     }
-    TrieNode(int begin, int module) : begin(begin), module(module)
+    TrieNode(int begin, unsigned char module) : begin(begin), module(module)
     {
         // constructor
         // initialize the wordEnd variable with false
@@ -56,7 +56,7 @@ void insert_key(TrieNode* root, std::string key, int begin)
     // Initialize the currentNode pointer with the root node and the end index of the word.
     unsigned char tmp_char;
     TrieNode* currentNode = root;
-    int module = 0;
+    unsigned char module = 0;
 
     // Iterate across the length of the string
     for (auto c : key) {
@@ -99,12 +99,12 @@ void insert_key(TrieNode* root, std::string key, int begin)
  * @param key 
  * @return std::pair<int, int>* 
  */
-std::pair<int, int>* search_key(TrieNode* root, std::string key)
+std::pair<int, unsigned char>* search_key(TrieNode* root, std::string key)
 {
     unsigned char tmp_char;
     // Initialize the currentNode pointer with the root node, the pair that will be returned and a bool value to verify if the word is only a character
     TrieNode* currentNode = root;
-    std::pair<int, int>* word_index_range = new std::pair<int, int>();
+    std::pair<int, unsigned char>* word_index_range = new std::pair<int, unsigned char>();
 
     // Iterate across the length of the string
     for (auto c : key) {

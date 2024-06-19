@@ -17,10 +17,10 @@ void decode(std::string ruta_archivo){
     std::ofstream decodificado("decode.txt");
     while(file.peek() != EOF){
         int index;
-        int module;
+        unsigned char module;
         file.read(reinterpret_cast<char*> (&index), sizeof(int));
-        file.read(reinterpret_cast<char*> (&module), sizeof(int));
-        if(!module){
+        file.read(reinterpret_cast<char*> (&module), sizeof(unsigned char));
+        if(module == 0){
 
             unsigned char c = static_cast<unsigned char>(index);
             std::string tmp_string(1, c);

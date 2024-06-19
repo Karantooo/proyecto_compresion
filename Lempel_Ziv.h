@@ -45,8 +45,8 @@ void Lempel_ziv_compresion(std::string ruta_archivo, int largo_subcadenas){
     for(int i=0 ; i<largo ; i++){
 
         std::string tmp_char(1, static_cast<unsigned char>(texto[i]));
-        std::pair<int, int>* rango_cadena = new std::pair<int, int>;
-        std::pair<int, int>* rango_caracter = search_key(compression_trie, tmp_char);
+        std::pair<int, unsigned char>* rango_cadena = new std::pair<int, unsigned char>;
+        std::pair<int, unsigned char>* rango_caracter = search_key(compression_trie, tmp_char);
 
 
         //Si el caracter mensaje[i] no aparecio anteriormente.
@@ -165,7 +165,7 @@ void Lempel_ziv_compresion(std::string ruta_archivo, int largo_subcadenas){
 
             flag_pair tmp_pair = compresion[i];
             file1.write(reinterpret_cast<char*>(&(tmp_pair.index)), sizeof(int));
-            file1.write(reinterpret_cast<char*>(&(tmp_pair.module)), sizeof(int));
+            file1.write(reinterpret_cast<char*>(&(tmp_pair.module)), sizeof(unsigned char));
 
         }
         file1.close();
