@@ -44,8 +44,8 @@ class HuffmanCoding{
         HuffmanCoding(std::string ruta): ruta(ruta){
             file.open(ruta);
             std::string word;
-            ruta_preorder = "pre_" + ruta + ".dat";
-            ruta_inorder = "in_" + ruta + ".dat";
+            ruta_preorder = "pre.dat";
+            ruta_inorder = "in.dat";
             pre_order_file.open(ruta_preorder, std::ios::out | std::ios::binary);
             in_order_file.open(ruta_inorder, std::ios::out | std::ios::binary);
             
