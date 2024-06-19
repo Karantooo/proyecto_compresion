@@ -320,11 +320,12 @@ class HuffmanCoding{
                 in_order_read.read(reinterpret_cast<char*> (&answer_char), sizeof(char));
                 in_order_read.read(reinterpret_cast<char*> (&answer_int), sizeof(unsigned int));
                 in_order_read.read(reinterpret_cast<char*> (&es_caracter), sizeof(bool));
-
                 
                 MinHeapNode a(answer_char, answer_int, es_caracter);
 
                 inorder_tree.push_back(a);
+
+
             }
         }
 
@@ -421,7 +422,7 @@ class HuffmanCoding{
                 }
                 i--;
                 exceso_ultimo_chunk = 127 - contador; 
-                file.write(reinterpret_cast<const char*>(&chunk_respuesta), sizeof(chunk_respuesta));
+                file.write(reinterpret_cast<char*>(&chunk_respuesta), sizeof(chunk_respuesta));
             }
             std::fstream bits_muertos;
             bits_muertos.open("bits_muertos.dat", std::ios::out | std::ios::binary);
@@ -429,7 +430,4 @@ class HuffmanCoding{
             bits_muertos.close();
             file.close();
         }
-
-
-
 };
