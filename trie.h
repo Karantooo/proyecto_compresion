@@ -1,7 +1,7 @@
 #ifndef TRIE_H
 #define TRIE_H
 
-#include <bits/stdc++.h>
+#include <vector>
 
 const int CHARACTER_NUMBER = 256;
 

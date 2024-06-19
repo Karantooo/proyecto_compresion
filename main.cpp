@@ -2,10 +2,10 @@
 
 int main(){
 
-    std::string texto = "./LZ_compression.dat";
-    //std::string texto = "C:/Users/rica1/OneDrive/Escritorio/textos de prueba/sources_20mb.txt";
-    Lempel_ziv compresor(texto);
-    // compresor.compress();
+    // std::string texto = "./LZ_compression.dat";
+    std::string texto = "pruebas.txt";
+    Lempel_ziv compresor(texto, 10);
+    compresor.compress();
     compresor.decompress();
     
 }
