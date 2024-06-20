@@ -7,5 +7,4 @@ int main(){
     Lempel_ziv compresor(texto, 10);
     compresor.compress();
     compresor.decompress();
-    
 }
