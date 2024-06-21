@@ -12,6 +12,8 @@ int main(int argc, char* argv[]){
 	double filesize2 = std::filesystem::file_size(filename2.c_str());
     filesize2 /= 1024;
 
+
+
     HuffmanCoding decodificador(argv[1]);
     auto start = std::chrono::high_resolution_clock::now();
     decodificador.decode();
