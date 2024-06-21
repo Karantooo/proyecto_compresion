@@ -1,7 +1,7 @@
 #include <iostream>
 #include <chrono>
-#include <Lempel_Ziv.h>
-#include <huffman.h>
+#include "../Lempel_Ziv.h"
+#include "../huffman.h"
 
 int main(int argc, char* argv[]){
     HuffmanCoding decodificador(argv[1]);
