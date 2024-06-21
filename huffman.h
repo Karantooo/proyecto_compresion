@@ -166,7 +166,7 @@ class HuffmanCoding{
                 
             }
             std::ofstream decompressed_file;
-            decompressed_file.open("decompressed.txt");
+            decompressed_file.open("decoded.txt");
             
 
             decompressed_file << respuesta;
@@ -403,7 +403,7 @@ class HuffmanCoding{
          */
         void _write_file(){
             file.close();
-            file.open("compressed.dat", std::ios::out | std::ios::binary);
+            file.open("encoded.dat", std::ios::out | std::ios::binary);
             std::string respuesta = "";
             for (auto linea : lineas_codificadas){
                 for (auto caracter : linea){
