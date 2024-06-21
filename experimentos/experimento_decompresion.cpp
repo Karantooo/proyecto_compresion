@@ -8,9 +8,7 @@ int main(int argc, char* argv[]){
     std::filesystem::path filename1 = argv[1];
     std::filesystem::path filename2 = argv[2];
     double filesize1 = std::filesystem::file_size(filename1.c_str());
-    filesize1 /= 1024;
 	double filesize2 = std::filesystem::file_size(filename2.c_str());
-    filesize2 /= 1024;
 
 
 
