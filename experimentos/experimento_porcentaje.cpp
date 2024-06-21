@@ -11,6 +11,6 @@ int main(int argc, char* argv[]){
 	std::cout << filesize1 << " " << filesize2 << std::endl;
 	double quotient;
 	quotient = filesize1/filesize2;
-	quotient = quotient*100;
-	std::cout << "Porcentaje de compresion " << quotient << std::endl; 
+	quotient = quotient * 100;
+	std::cout << quotient << std::endl; 
 }

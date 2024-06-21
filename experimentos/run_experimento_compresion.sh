@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "experimento codifi
+echo "size archivo 1;tiempo codicicacion Huffmann;size archivo 2;tiempo compresion LZ"
 files = ("cancion.txt", "mio_cid.txt", "shakespeare.txt", "smash_wikipedia.txt", "texto.txt")
 
 for (c = 1; c <= 20; c++)
