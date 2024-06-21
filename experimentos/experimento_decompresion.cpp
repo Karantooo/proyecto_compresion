@@ -11,8 +11,8 @@ int main(int argc, char* argv[]){
     double decoding_time = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
     decoding_time *= 1e-9;
     
-    Lempel_ziv decompresor(argv[1], std::stoi(argv[2]));
     start = std::chrono::high_resolution_clock::now();
+    Lempel_ziv decompresor(argv[1], std::stoi(argv[2]));
     decompresor.decompress();
     end = std::chrono::high_resolution_clock::now();
     double decompressing_time = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
