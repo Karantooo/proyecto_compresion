@@ -2,7 +2,11 @@
 
 # Imprimimos una cabecera para nuestro archivo CSV
 echo "experimento;limite superior;memoria ocupada en bytes"
-for n in "100" 1000 5000
-palabra=$(valgrind ./experimento_compresion "$n" 2>&1 | grep "total heap usage")
-palabra=$(valgrind ./experimento_descompresion "$n" 2>&1 | grep "total heap usage")
+files = ("cancion.txt", "mio_cid.txt", "shakespeare.txt", "smash_wikipedia.txt", "texto.txt")
+for n in "${files[@]}"
+do
+	memoria1 = $(valgrind ./experimento_compresion_memoria.cpp "$n" 20 | grep "total heap usage")
+	memoria2 = $(valgrind ./experimento_descompresion_memoria.cpp  "$n" 20 | grep "total heap usage")
+
+done
 
