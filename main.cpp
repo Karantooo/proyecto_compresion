@@ -6,5 +6,4 @@ int main(){
     std::string texto = "pruebas.txt";
     Lempel_ziv compresor(texto, 10);
     compresor.compress();
-    compresor.decompress();
 }

@@ -4,7 +4,7 @@
 
 int main(int argc, char* argv[]){
 	HuffmanCoding codificador(argv[1]);
-    	codificador.enconde();
+    codificador.enconde();
 	Lempel_ziv compresor(argv[1], std::stoi(argv[2]));
-    	compresor.compress();
+    compresor.compress();
 }

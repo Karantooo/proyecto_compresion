@@ -10,6 +10,7 @@ int main(int argc, char* argv[]){
     auto end = std::chrono::high_resolution_clock::now();
     double decoding_time = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
     decoding_time *= 1e-9;
+    std::cout << "tiempo de decodificacion: " << decoding_time;
     
     start = std::chrono::high_resolution_clock::now();
     Lempel_ziv decompresor(argv[1], std::stoi(argv[2]));
