@@ -22,19 +22,19 @@ int main(int argc, char* argv[]){
     double compressing_time = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
     compressing_time *= 1e-9;
 
-    HuffmanCoding decodificador("../encoded.dat");
+    HuffmanCoding decodificador("encoded.dat", "pre.dat", "in.dat");
     start = std::chrono::high_resolution_clock::now();
     decodificador.decode();
     end = std::chrono::high_resolution_clock::now();
     double decoding_time = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
     decoding_time *= 1e-9;
 
-    Lempel_ziv decompresor("../LZ_compression.dat");
+    Lempel_ziv decompresor("LZ_compression.dat");
     start = std::chrono::high_resolution_clock::now();
     decompresor.decompress();
     end = std::chrono::high_resolution_clock::now();
     double decompressing_time = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
     decompressing_time *= 1e-9;
 
-    std::cout << filesize1 << ";" << coding_time  << ";" << compressing_time << ";" << decoding_time << ";" << decompressing_time << ::endl;
+    std::cout << filesize1 << ";" << coding_time  << ";" << compressing_time << ";" << decoding_time << ";" << decompressing_time << std::endl;
 }
