@@ -3,6 +3,7 @@
 #include "../huffman.h"
 
 int main(int argc, char* argv[]){
-	Lempel_ziv compresor(argv[1], 10);
-    compresor.compress();
+	HuffmanCoding decodificador(argv[1], argv[2], argv[3]);
+    decodificador.decode();
+    return 0;
 }
