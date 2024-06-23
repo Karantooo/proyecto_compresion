@@ -3,6 +3,9 @@
 #include "../huffman.h"
 
 int main(int argc, char* argv[]){
-	Lempel_ziv compresor(argv[1], 10);
-    compresor.compress();
+	Lempel_ziv descompresor(argv[1]);
+    descompresor.decompress();
+
+    return 0;
 }
+
