@@ -8,6 +8,6 @@ for(( c = 1; c <= 20; c++))
 do
 	for n in 5 10 15 20
 	do
-		./experimento_compresion_LZ "../textos/cancion.txt" $n >> $output_file
+		./experimento_compresion_LZ.out "../textos/mio_cid.txt" $n
 	done
 done
