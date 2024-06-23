@@ -1,16 +1,23 @@
 #include <iostream>
 #include <filesystem>
+#include "../huffman.h"
+#include "../Lempel_Ziv.h"
 
 int main(int argc, char* argv[]){
-	std::filesystem::path filename1 = argv[1];
-	std::filesystem::path filename2 = argv[2];
-	
+	std::filesystem::path filename1 = argv[1];	
 	double filesize1 = std::filesystem::file_size(filename1.c_str());
-	double filesize2 = std::filesystem::file_size(filename2.c_str());
 	
-	std::cout << filesize1 << " " << filesize2 << std::endl;
-	double quotient;
-	quotient = filesize1/filesize2;
-	quotient = quotient * 100;
-	std::cout << quotient << std::endl; 
+	HuffmanCoding codificador(filename1);
+    	codificador.enconde();
+	std::filesystem::path f_codificado = "encoded.dat";
+	double codificado = std::filesystem::file_size(f_codificado.c_str());	
+	double quotient1 = (codificado / filesize1) * 100;
+
+	Lempel_ziv compresor(filename1, 10);
+	compresor.compress();
+	std::filesystem::path f_comprimido = "LZ_compression.dat";
+        double comprimido = std::filesystem::file_size(f_comprimido.c_str());
+        double quotient2 = (comprimido / filesize1) * 100;
+	
+	std::cout << filesize1 << ";" << codificado << ";" << quotient1 << ";" << comprimido << ";" << quotient2 << std::endl; 
 }
