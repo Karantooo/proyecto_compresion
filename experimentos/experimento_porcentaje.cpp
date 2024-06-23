@@ -19,5 +19,5 @@ int main(int argc, char* argv[]){
         double comprimido = std::filesystem::file_size(f_comprimido.c_str());
         double quotient2 = (comprimido / filesize1) * 100;
 	
-	std::cout << filesize1 << ";" << codificado << ";" << quotient1 << ";" << comprimido << ";" << quotient2 << std::endl; 
+	std::cout << filesize1 << ";" << quotient1 << ";" << quotient2 << std::endl; 
 }
