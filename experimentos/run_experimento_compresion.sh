@@ -9,6 +9,6 @@ for ((c=1; c<=20; c++))
 do
 	for n in "${files[@]}"
 	do
-		./experimento_compresion $n 10
+		./experimento_compresion.out $n 10
 	done
 done
