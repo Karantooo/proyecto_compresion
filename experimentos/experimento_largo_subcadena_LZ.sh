@@ -2,7 +2,7 @@
 
 output_file="resultados_subcadena.csv"
 
-echo "size subcadena;tiempo compresion LZ;tiempo descompresion LZ"
+echo "size subcadena;tiempo compresion LZ;tiempo descompresion LZ;porcentaje compresion LZ"
 
 for(( c = 1; c <= 20; c++))
 do
