@@ -1,5 +1,6 @@
 #include <iostream>
 #include <chrono>
+#include <filesystem>
 #include "../Lempel_Ziv.h"
 
 int main(int argc, char* argv[]){
@@ -23,7 +24,7 @@ int main(int argc, char* argv[]){
 
 	std::filesystem::path f_comprimido = "LZ_compression.dat";
     double comprimido = std::filesystem::file_size(f_comprimido.c_str());
-    double compression_percentage = (comprimido / filesize1) * 100;
+    double compression_percentage = (comprimido / filesize) * 100;
 
 	std::cout << std::stoi(argv[2]) << ";" << compressing_time << ";" << decompressing_time << ";" << compression_percentage <<std::endl;
 
