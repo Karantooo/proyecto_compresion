@@ -1,0 +1,2 @@
+# Documentacion textos
+Esta carpeta esta compuesta por todos los textos que utilizamos dentro de nuestras pruebas. Estos no son muy pesados debido a las limitaciones en termino de memoria que tiene lempel ziv. 
