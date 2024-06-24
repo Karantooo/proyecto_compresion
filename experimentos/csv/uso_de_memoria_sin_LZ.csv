@@ -1,0 +1,19 @@
+Funcion;archivo;peso;memoria ocupada en bytes
+Codificacion huffman;cancion.txt;2344;168649 
+Decodificacion huffman;cancion.txt;2344;300232 
+Descompresion lz;cancion.txt;2344;98752 
+Codificacion huffman;mio_cid.txt;208571;3049505 
+Decodificacion huffman;mio_cid.txt;208571;5122641 
+Descompresion lz;mio_cid.txt;208571;582598 
+Codificacion huffman;shakespeare.txt;1433252;22945257 
+Decodificacion huffman;shakespeare.txt;1433252;35183906 
+Descompresion lz;shakespeare.txt;1433252;4023241 
+Codificacion huffman;smash_wikipedia.txt;7243;276466 
+Decodificacion huffman;smash_wikipedia.txt;7243;789763 
+Descompresion lz;smash_wikipedia.txt;7243;106433 
+Codificacion huffman;texto.txt;21;118608 
+Decodificacion huffman;texto.txt;21;123215 
+Descompresion lz;texto.txt;21;91125 
+Codificacion huffman;texto_1mb.txt;1009957;19998487 
+Decodificacion huffman;texto_1mb.txt;1009957;30461197 
+Descompresion lz;texto_1mb.txt;1009957;4023241 
