@@ -17,7 +17,13 @@ struct MinHeapNode {
 	MinHeapNode *left, *right; 
 	bool nodo_caracter;
 
-
+	/**
+	 * @brief Inicializa un nuevo nodo
+	 * 
+	 * @param data caracter 
+	 * @param freq frecuencia que se repite el caracter
+	 * @param nodo_caracter entrega true si en el nodo el valor de caracter es relevante
+	 */
 	MinHeapNode(char data, unsigned int freq, bool nodo_caracter) 
 
 	{ 
