@@ -1,5 +1,10 @@
 #pragma once
 #include <iostream>
+
+/**
+ * @brief Este clase define un arbol utilizado para MinHeap
+ * 
+ */
 struct MinHeapNode { 
 
 	// One of the input characters 
@@ -28,7 +33,10 @@ struct MinHeapNode {
     }
 }; 
 
-
+/**
+ * @brief Comparador para Min HeapNode que los compara por frecuencia
+ * 
+ */
 struct compare { 
 
 	bool operator()(MinHeapNode* l, MinHeapNode* r) 
@@ -38,7 +46,13 @@ struct compare {
 	} 
 }; 
 
-
+/**
+ * @brief Funcion para poder imprimir por cout un MinHeapNode
+ * 
+ * @param stream 
+ * @param nodo 
+ * @return std::ostream& 
+ */
 std::ostream& operator<< (std::ostream& stream, MinHeapNode nodo){
     stream << nodo.data << " ";
     stream << nodo.freq;

@@ -6,8 +6,11 @@
 const int CHARACTER_NUMBER = 256;
 
 /**
- * @brief 
- * 
+ * @brief Clase para crear un trie
+ * Este trie esta hecho para aplicar LZ. Es una implementacion para un trie que considera
+ * los caracteres de la tabla ASCII.
+ * Esta clase esta basado en un codigo de geeks for geeks
+ * @link https://www.geeksforgeeks.org/trie-insert-and-search/
  */
 struct TrieNode {
 
@@ -19,23 +22,29 @@ struct TrieNode {
     int begin;
     unsigned char module;
 
+    /**
+     * @brief Construye un nuevo trie
+     * inicializa wordEnd a falso
+     * el index de childnode lo inicializa con nullptr
+     * 
+     */
     TrieNode(){
-        // constructor
-        // initialize the wordEnd variable with false
-        // initialize every index of childNode array with
-        // NULL
+
         wordEnd = false;
         for (int i = 0; i < CHARACTER_NUMBER; i++) {
             childNode[i] = NULL;
         }
     }
+
+    /**
+     * @brief Constructor
+     * Inicializa la variable wordEnd con falso
+     * Establece el índice de inicio y fin en el mensaje de la palabra que termina con el carácter actual representado por este nodo.
+     * Inicializa cada índice del arreglo childNode con NULL
+     */
+
     TrieNode(int begin, unsigned char module) : begin(begin), module(module)
     {
-        // constructor
-        // initialize the wordEnd variable with false
-        // set the begin and the end index in the message of the word that finishes with the current character representated by this node.
-        // initialize every index of childNode array with
-        // NULL
         wordEnd = false;
         for (int i = 0; i < CHARACTER_NUMBER; i++) {
             childNode[i] = NULL;
@@ -45,7 +54,7 @@ struct TrieNode {
 
 
 /**
- * @brief 
+ * @brief Inserta caracter a un trie
  * 
  * @param root 
  * @param key 
@@ -93,7 +102,7 @@ void insert_key(TrieNode* root, std::string key, int begin)
 }
 
 /**
- * @brief 
+ * @brief Busca caracter en un trie
  * 
  * @param root 
  * @param key 
